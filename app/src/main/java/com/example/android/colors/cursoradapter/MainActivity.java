@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
+import com.example.android.colors.cursoradapter.adapter.CursorAdapter;
+
 import static android.widget.LinearLayout.HORIZONTAL;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,10 +42,8 @@ public class MainActivity extends AppCompatActivity {
 //        MyCursorAdapter customAdapter = new MyCursorAdapter(MainActivity.this,
 //                cursor, 0);
 
-        StarCursorAdapter adapter = new StarCursorAdapter(this, cursor);
-        RecyclerView listView = (RecyclerView) findViewById(R.id.listView1);
-        listView.setLayoutManager(new LinearLayoutManager(this));
-        listView.addItemDecoration(new DividerItemDecoration(this, HORIZONTAL));
+        CursorAdapter adapter = new CursorAdapter(this, cursor);
+        ListView listView = (ListView) findViewById(R.id.listView1);
         listView.setAdapter(adapter);
     }
 }

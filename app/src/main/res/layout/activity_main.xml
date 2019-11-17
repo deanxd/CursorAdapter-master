@@ -5,7 +5,7 @@
     android:background="#F1EAEA"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/listView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />

@@ -37,7 +37,7 @@ import android.widget.Filterable;
 public abstract class BaseCursorAdapter<VH extends BaseViewHolder> extends AbsTurboAdapter<Cursor, BaseViewHolder>
         implements Filterable, CursorFilter.CursorFilterClient {
 
-    protected static final String TAG = "BaseCursorAdapter";
+    protected static final String TAG = "BaseNCursorAdapter";
 
     protected Cursor mCursor;
     protected CursorFilter mCursorFilter;

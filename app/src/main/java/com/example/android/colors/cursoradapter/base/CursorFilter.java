@@ -21,23 +21,23 @@ import android.database.Cursor;
 import android.widget.Filter;
 
 /**
- * <p>The CursorFilter delegates most of the work to the CursorAdapter.
+ * <p>The CursorFilter delegates most of the work to the BaseNCursorAdapter.
  * Subclasses should override these delegate methods to run the queries
  * and convert the results into String that can be used by auto-completion
  * widgets.</p>
  */
-class CursorFilter extends Filter {
+public class CursorFilter extends Filter {
 
     CursorFilterClient mClient;
 
-    interface CursorFilterClient {
+    public interface CursorFilterClient {
         CharSequence convertToString(Cursor cursor);
         Cursor runQueryOnBackgroundThread(CharSequence constraint);
         Cursor getCursor();
         void changeCursor(Cursor cursor);
     }
 
-    CursorFilter(CursorFilterClient client) {
+    public CursorFilter(CursorFilterClient client) {
         mClient = client;
     }
 

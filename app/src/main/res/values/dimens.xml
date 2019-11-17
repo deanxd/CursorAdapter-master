@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="turbo_dp_4">4dp</dimen>
+    <dimen name="turbo_dp_22">22dp</dimen>
+    <dimen name="turbo_dp_48">48dp</dimen>
+    <dimen name="turbo_sp_14">14sp</dimen>
+</resources>

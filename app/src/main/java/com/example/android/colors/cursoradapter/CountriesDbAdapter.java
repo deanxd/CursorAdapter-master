@@ -1,0 +1,179 @@
+package com.example.android.colors.cursoradapter;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class CountriesDbAdapter {
+
+    public static final String KEY_ROWID = "_id";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_CODE = "code";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_CONTINENT = "continent";
+    public static final String KEY_REGION = "region";
+
+    private static final String TAG = "CountriesDbAdapter";
+    private DatabaseHelper mDbHelper;
+    private SQLiteDatabase mDb;
+
+    private static final String DATABASE_NAME = "World";
+    private static final String SQLITE_TABLE = "Country";
+    private static final int DATABASE_VERSION = 1;
+
+    private final Context mCtx;
+
+    private static final String DATABASE_CREATE =
+            "CREATE TABLE if not exists " + SQLITE_TABLE + " (" +
+                    KEY_ROWID + " integer PRIMARY KEY autoincrement," +
+                    KEY_TYPE + "," +
+                    KEY_CODE + "," +
+                    KEY_NAME + "," +
+                    KEY_CONTINENT + "," +
+                    KEY_REGION + "," +
+                    " UNIQUE (" + KEY_CODE + "));";
+
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            Log.w(TAG, DATABASE_CREATE);
+            db.execSQL(DATABASE_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS " + SQLITE_TABLE);
+            onCreate(db);
+        }
+    }
+
+    public CountriesDbAdapter(Context ctx) {
+        this.mCtx = ctx;
+    }
+
+    public CountriesDbAdapter open() throws SQLException {
+        mDbHelper = new DatabaseHelper(mCtx);
+        mDb = mDbHelper.getWritableDatabase();
+        return this;
+    }
+
+    public void close() {
+        if (mDbHelper != null) {
+            mDbHelper.close();
+        }
+    }
+
+    public long createCountry(String type, String code, String name,
+                              String continent, String region) {
+
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_TYPE, type);
+        initialValues.put(KEY_CODE, code);
+        initialValues.put(KEY_NAME, name);
+        initialValues.put(KEY_CONTINENT, continent);
+        initialValues.put(KEY_REGION, region);
+
+        return mDb.insert(SQLITE_TABLE, null, initialValues);
+    }
+
+    public boolean deleteAllCountries() {
+
+        int doneDelete = 0;
+        doneDelete = mDb.delete(SQLITE_TABLE, null, null);
+        Log.w(TAG, Integer.toString(doneDelete));
+        return doneDelete > 0;
+
+    }
+
+    public Cursor fetchCountriesByName(String inputText) throws SQLException {
+        Log.w(TAG, inputText);
+        Cursor mCursor = null;
+        if (inputText == null || inputText.length() == 0) {
+            mCursor = mDb.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_TYPE,
+                            KEY_CODE, KEY_NAME, KEY_CONTINENT, KEY_REGION},
+                    null, null, null, null, null);
+
+        } else {
+            mCursor = mDb.query(true, SQLITE_TABLE, new String[]{KEY_ROWID, KEY_TYPE,
+                            KEY_CODE, KEY_NAME, KEY_CONTINENT, KEY_REGION},
+                    KEY_NAME + " like '%" + inputText + "%'", null,
+                    null, null, null, null);
+        }
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+
+    public Cursor fetchAllCountries() {
+
+        Cursor mCursor = mDb.query(SQLITE_TABLE, new String[]{KEY_ROWID, KEY_TYPE,
+                        KEY_CODE, KEY_NAME, KEY_CONTINENT, KEY_REGION},
+                null, null, null, null, null);
+
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public void insertSomeCountries() {
+
+        createCountry("1", "AFG1", "Afghanistan", "Asia", "Southern and Central Asia");
+        createCountry("2", "ALB2", "Albania", "Europe", "Southern Europe");
+        createCountry("3", "DZA3", "Algeria", "Africa", "Northern Africa");
+        createCountry("3", "ASM4", "American Samoa", "Oceania", "Polynesia");
+        createCountry("1", "AND5", "Andorra", "Europe", "Southern Europe");
+        createCountry("1", "AGO6", "Angola", "Africa", "Central Africa");
+        createCountry("2", "AIA7", "Anguilla", "North America", "Caribbean");
+
+        createCountry("1", "AFG8", "Afghanistan", "Asia", "Southern and Central Asia");
+        createCountry("2", "ALB9", "Albania", "Europe", "Southern Europe");
+        createCountry("3", "DZA10", "Algeria", "Africa", "Northern Africa");
+        createCountry("3", "ASM11", "American Samoa", "Oceania", "Polynesia");
+        createCountry("1", "AND12", "Andorra", "Europe", "Southern Europe");
+        createCountry("1", "AGO13", "Angola", "Africa", "Central Africa");
+        createCountry("2", "AIA14", "Anguilla", "North America", "Caribbean");
+
+
+        createCountry("1", "AFG15", "Afghanistan", "Asia", "Southern and Central Asia");
+        createCountry("2", "ALB16", "Albania", "Europe", "Southern Europe");
+        createCountry("3", "DZA17", "Algeria", "Africa", "Northern Africa");
+        createCountry("3", "ASM18", "American Samoa", "Oceania", "Polynesia");
+        createCountry("1", "AND19", "Andorra", "Europe", "Southern Europe");
+        createCountry("1", "AGO20", "Angola", "Africa", "Central Africa");
+        createCountry("2", "AIA21", "Anguilla", "North America", "Caribbean");
+
+        createCountry("1", "AFG22", "Afghanistan", "Asia", "Southern and Central Asia");
+        createCountry("2", "ALB23", "Albania", "Europe", "Southern Europe");
+        createCountry("3", "DZA24", "Algeria", "Africa", "Northern Africa");
+        createCountry("3", "ASM25", "American Samoa", "Oceania", "Polynesia");
+        createCountry("1", "AND26", "Andorra", "Europe", "Southern Europe");
+        createCountry("1", "AGO27", "Angola", "Africa", "Central Africa");
+        createCountry("2", "AIA28", "Anguilla", "North America", "Caribbean");
+
+
+        createCountry("8", "AFG29", "Afghanistan", "Asia", "Southern and Central Asia");
+        createCountry("2", "ALB30", "Albania", "Europe", "Southern Europe");
+        createCountry("3", "DZA31", "Algeria", "Africa", "Northern Africa");
+        createCountry("10", "ASM32", "American Samoa", "Oceania", "Polynesia");
+        createCountry("1", "AND33", "Andorra", "Europe", "Southern Europe");
+        createCountry("1", "AGO34", "Angola", "Africa", "Central Africa");
+        createCountry("2", "AIA35", "Anguilla", "North America", "Caribbean");
+
+    }
+
+}
